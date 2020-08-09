@@ -1,10 +1,10 @@
 #include "360MEMZ.h"
 
-const wchar_t *tips = L"ÄãµÄµçÄÔ±»\"360MEMZµÄ¸´³ğ\"Ï«ÁË!!!\n\
-µ«ÊÇÕâÊÇÒ»¸ö¡°°²È«¡±µÄÌØĞ§³ÌĞò×é¡£\n\
-Äã¿ÉÒÔËæÊ±¹Ø±ÕËü£¬³ıÀ¶ÆÁÇ¿ÖÆ¹Ø»úÍâ²»»á¶ÔµçÄÔÔì³ÉÈÎºÎËğº¦¡£\n\n\
-ËùÒÔ·ÅĞÄvan¡á°É£¡ \n\
-³ÌĞò×é×÷Õß£ºbÕ¾@ê¸í³Âü_gt428";
+const wchar_t *tips = L"ä½ çš„ç”µè„‘æ±äº†ï¼ï¼ï¼\n\
+å®é™…ä¸Šæ²¡æ±ï¼Œåªæ˜¯ä¸€äº›ç‰¹æ•ˆã€‚\n\
+ä½ å¯ä»¥éšæ—¶å…³é—­è¿™ä¸ªç¨‹åºï¼Œé™¤è“å±å¼ºåˆ¶å…³æœºå¤–ä¸ä¼šå¯¹ç”µè„‘é€ æˆä»»ä½•æŸå®³ã€‚\n\n\
+æ‰€ä»¥æ”¾å¿ƒçš„vanâ™‚å§ï¼ \n\
+ç¨‹åºç»„ä½œè€…ï¼šbç«™@æ—®æ²“æ›¼_gt428";
 
 HCRYPTPROV prov;
 
@@ -13,19 +13,19 @@ extern int lasteffect;
 
 int random() {
 	if (prov == NULL)
-		if (!CryptAcquireContext(&prov, NULL, NULL, PROV_RSA_FULL, CRYPT_SILENT | CRYPT_VERIFYCONTEXT))
+		if (!CryptAcquireContext(&prov, NULL, NULL, PROV_RSA_FULL, CRYPT_SILENT | CRYPT_VERIFYCONTEXT)){
+                        MessageBox(NULL, L"åº”ç”¨ç¨‹åºåœ¨åˆå§‹åŒ– Crypto API æ—¶å‘ç”Ÿäº†ä¸€äº›å¥‡å¦™çš„é”™è¯¯ã€‚", L"360MEMZ.exe - åº”ç”¨ç¨‹åºé”™è¯¯", MB_ICONERROR);
 			ExitProcess(1);
-
+                }
 	int out;
 	CryptGenRandom(prov, sizeof(out), (BYTE *)(&out));
 	return out & 0x7fffffff;
 }
 void write(){
-	FILE *fout = fopen("\\tips.txt", "w");
+	FILE *fout = fopen("tips.txt", "w");
 	fwprintf(fout, L"%s", tips);
 	fclose(fout);
-	ShellExecuteA(NULL, NULL, "notepad", "\\tips.txt", NULL, SW_SHOWDEFAULT);
-
+	ShellExecuteA(NULL, NULL, "notepad", "tips.txt", NULL, SW_SHOWDEFAULT);
 }
 
 MCIERROR openSound(LPWSTR path, LPWSTR alias, LPWSTR type) {
@@ -117,36 +117,38 @@ LRESULT CALLBACK msgBoxHook(int nCode, WPARAM wParam, LPARAM lParam) {
 
 DWORD WINAPI Box1(LPVOID para){
 	HHOOK hook = SetWindowsHookEx(WH_CBT, msgBoxHook, 0, GetCurrentThreadId());
-	MessageBox(NULL, L"ÈıÁ¬ÒÔ½øÈë²¡¶¾!", L"360MEMZ", MB_ICONERROR);
+	MessageBox(NULL, L"ä¸‰è¿ä»¥è¿›å…¥ç—…æ¯’!", L"360MEMZ", MB_ICONERROR);
 	UnhookWindowsHookEx(hook);
 	return 0;
 }
 
 DWORD WINAPI VideoThread(LPVOID lpParameter){
-	char message[100];
-    mciSendStringA("Open \"360MEMZ.wmv\" type mpegvideo Alias MyVideo", message, 100, 0);
-    printf("open: %s\n", message);
-    mciSendStringA("Play MyVideo", message, 100, 0);
+    char message[100];
+    mciSendStringA("Open \"360MEMZ.wmv\" type mpegvideo Alias 360MEMZJokeVideo", message, 100, 0);
+    printf("opened: %s\n", message);
+    mciSendStringA("Play 360MEMZJokeVideo", message, 100, 0);
     Sleep(20000);
-    mciSendStringA("Pause MyVideo", "", 0, 0);
+    mciSendStringA("Pause 360MEMZJokeVideo", "", 0, 0);
 }
 
 int main(){
+
 	if(!IsWin7OrLater()){
-		MessageBox(NULL, L"´Ë³ÌĞòĞèÒªWindows 7 ¼°ÒÔÉÏ²ÅÄÜÔËĞĞ£¡", L"360MEMZ", MB_ICONERROR);
+		MessageBox(NULL, L"æ­¤ç¨‹åºéœ€è¦åœ¨ Windows 7 åŠä»¥ä¸Šç‰ˆæœ¬è¿è¡Œã€‚", L"360MEMZ", MB_ICONERROR);
 	}
 	scrh = GetSystemMetrics(SM_CXSCREEN), scrw = GetSystemMetrics(SM_CYSCREEN);
-	setlocale(LC_ALL, "chs");
+	setlocale(LC_ALL, "chs"); // hax
 	write();
 	Sleep(2000);
 	LPSTR lpCurrentPath = (LPSTR)LocalAlloc(LMEM_ZEROINIT, MAX_PATH);
 	GetModuleFileNameA(NULL, lpCurrentPath, MAX_PATH);
-	playSound(L"button", L"1.data", TRUE);
+	playSound(L"button", L"1.data", TRUE); // buttercup.wav
 	
 	*(strrchr(lpCurrentPath, '\\')) = 0;
 	
 	Sleep(2500);
 	
+        // æˆ‘ = 360
 	SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, (PVOID)L"pic1.bmp", SPIF_UPDATEINIFILE);
 	HWND hShell = FindWindowA("Shell_TrayWnd", NULL);
 	SendMessage(hShell, WM_COMMAND, (WPARAM)419, 0);
@@ -160,7 +162,7 @@ int main(){
 	
 	
 	//ShellExecuteA(NULL, NULL, "notepad", "\\tips.txt", NULL, SW_SHOWDEFAULT);
-	CreateThread(NULL, 4096, CreateTerminater ,(LPVOID)GetCurrentThreadId(), 0, NULL);
+	CreateThread(NULL, 4096, CreateTerminater, (LPVOID)GetCurrentThreadId(), 0, NULL);
 	for(int i = 0; i< 20; i++){
 		TerminateThread(OpenThread(THREAD_ALL_ACCESS, 0, tid[i]), 0);
 		
@@ -190,7 +192,7 @@ int main(){
 	Sleep(40000);
 	
 	system("taskkill /f /im rundll32.exe");
-	playSound(L"360MEMZ", L"2.data", TRUE);
+	playSound(L"360MEMZ", L"2.data", TRUE); // intro.wav
 	Sleep(8000);
 	
 	
@@ -218,5 +220,6 @@ int main(){
 	Kill();
 	TerminateThread(GetCurrentThread(), 0); 
 	
+        return 0; // ä¸ä»¥ä¸Š TerminateThread åŒç­‰æ•ˆæœ
 }
  
