@@ -2,17 +2,16 @@
 #define  WM_SHOWTASK (WM_USER + 1)
 
 const wchar_t *effectnames[] = {
-L"À¬ »ø ³¡", 
-L"¹Ø×¢upÖí",
-L"ÈÎ Îñ À¸ Ğ¡ ¾ç ³¡",
-L"É¾³ıÎÄ¼ş",
-L"360MEMZ¤Î¹íĞó",
-L"HilbertÇúÏß",
+L"åƒ åœ¾ åœº", 
+L"å…³æ³¨upçŒª",
+L"ä»» åŠ¡ æ  å° å‰§ åœº",
+L"åˆ é™¤æ–‡ä»¶",
+L"360MEMZã®é¬¼ç•œ",
+L"Hilbertæ›²çº¿",
 L"Loading...", 
 L"Cmd_MEMZ",
-L"ºÚ ¶´",
-L"winver¤ÎÉ§ÈÅ" 
-
+L"é»‘ æ´",
+L"winverã®éªšæ‰°" 
 };
 
 int lasteffect = 1;
@@ -24,7 +23,7 @@ void ToTray(HWND hwnd, BOOL bDelete)
 {
 	if(firsttotray) {
 		firsttotray = false;
-		MessageBox(hwnd, L"360MEMZ¿ØÖÆÌ¨ ½«×îĞ¡»¯ÖÁÍĞÅÌ¡£", L"360MEMZ", MB_ICONINFORMATION);
+		MessageBox(hwnd, L"360MEMZæ§åˆ¶å° å°†æœ€å°åŒ–è‡³æ‰˜ç›˜ã€‚", L"360MEMZ", MB_ICONINFORMATION);
 	}
 	
 	HICON hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_360MEMZ));
@@ -40,16 +39,16 @@ static const GUID ic_guid =
 	nid.uCallbackMessage = WM_SHOWTASK;
     nid.hIcon = hIcon;
     nid.uID = 0;
-    lstrcpyW(nid.szTip, L"360MEMZ ¿ØÖÆÌ¨");//ĞÅÏ¢ÌáÊ¾Ìõ
+    lstrcpyW(nid.szTip, L"360MEMZ æ§åˆ¶å°");//ä¿¡æ¯æç¤ºæ¡
     Shell_NotifyIcon(NIM_SETVERSION, &nid);
-    Shell_NotifyIcon(bDelete?NIM_DELETE:NIM_ADD, &nid);//ÔÚÍĞÅÌÇøÌí¼ÓÍ¼±ê
+    Shell_NotifyIcon(bDelete?NIM_DELETE:NIM_ADD, &nid);//åœ¨æ‰˜ç›˜åŒºæ·»åŠ å›¾æ ‡
     /*AllocConsole();
     Sleep(500);
     char a[999];
     sprintf(a, "%u\n", GetLastError());
     MessageBoxA(NULL, a, "", 0);
     Sleep(2000);*/
-    if(!bDelete)ShowWindow(hwnd, SW_HIDE);//Òş²ØÖ÷´°¿Ú
+    if(!bDelete)ShowWindow(hwnd, SW_HIDE);//éšè—ä¸»çª—å£
     else {
     	ShowWindow(hwnd, SW_SHOW);
     	ShowWindow(hwnd, SW_RESTORE); 
@@ -63,9 +62,9 @@ int iTimeout = 240;
 void DrawGlowingText(HDC hDC, LPWSTR szText, RECT *rcArea, 
 	DWORD dwTextFlags, int iGlowSize, HFONT hFont)
 {
-	//»ñÈ¡Ö÷Ìâ¾ä±ú
+	//è·å–ä¸»é¢˜å¥æŸ„
 	HTHEME hThm = OpenThemeData(GetDesktopWindow(), L"TextStyle");
-	//´´½¨DIB
+	//åˆ›å»ºDIB
 	HDC hMemDC = CreateCompatibleDC(hDC);
 	BITMAPINFO bmpinfo = {0};
 	bmpinfo.bmiHeader.biSize = sizeof(bmpinfo.bmiHeader);
@@ -77,12 +76,12 @@ void DrawGlowingText(HDC hDC, LPWSTR szText, RECT *rcArea,
 	HBITMAP hBmp = CreateDIBSection(hMemDC, &bmpinfo, DIB_RGB_COLORS, 0, NULL, 0);
 	if (hBmp == NULL) return;
 	HGDIOBJ hBmpOld = SelectObject(hMemDC, hBmp);
-	//»æÖÆÑ¡Ïî
+	//ç»˜åˆ¶é€‰é¡¹
 	DTTOPTS dttopts = {0};
 	dttopts.dwSize = sizeof(DTTOPTS);
 	dttopts.dwFlags = DTT_GLOWSIZE | DTT_COMPOSITED;
-	dttopts.iGlowSize = iGlowSize;	//·¢¹âµÄ·¶Î§´óĞ¡
-	//»æÖÆÎÄ±¾
+	dttopts.iGlowSize = iGlowSize;	//å‘å…‰çš„èŒƒå›´å¤§å°
+	//ç»˜åˆ¶æ–‡æœ¬
 	SetTextColor(hMemDC, RGB(192, 0, 255));
 	if(hFont) SelectObject(hMemDC, hFont);
 	RECT rc = {0, 0, rcArea->right - rcArea->left, rcArea->bottom - rcArea->top};
@@ -131,12 +130,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) 
 			LogFont.lfWeight = FW_BOLD;
 			LogFont.lfWidth = -24;
 			LogFont.lfUnderline = TRUE;
-			lstrcpyW(LogFont.lfFaceName, L"Î¢ÈíÑÅºÚ");
+			lstrcpyW(LogFont.lfFaceName, L"å¾®è½¯é›…é»‘");
 			HFONT hFontNew = CreateFontIndirectW(&LogFont);
 			SelectObject(hdc, hFontNew);
 			
 			
-			swprintf(Text, L"ÒÑ¾­½øĞĞµ½µÚ%d¸öĞ§¹û:\n%s\nÔ¤¼Æ½«ÔÚ%dÃëÄÚÀ¶ÆÁ", lasteffect, effectnames[lasteffect-1], iTimeout);
+			swprintf(Text, L"å·²ç»è¿›è¡Œåˆ°ç¬¬%dä¸ªæ•ˆæœ:\n%s\né¢„è®¡å°†åœ¨%dç§’å†…è“å±", lasteffect, effectnames[lasteffect-1], iTimeout);
 			
 			DrawGlowingText(hdc, Text, &rc, DT_CENTER, 15, hFontNew);
 			EndPaint(hwnd, &ps);
@@ -174,14 +173,14 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
 	wc.hIconSm		 = LoadIcon(hInstance, MAKEINTRESOURCE(IDR_360MEMZ)); /* as above */
 
 	if(!RegisterClassEx(&wc)) {
-		MessageBoxA(NULL, "Window Registration Failed!","Error!",MB_ICONEXCLAMATION|MB_OK);
+		MessageBoxA(NULL, "Can't register window WindowClass.","Error",MB_ICONEXCLAMATION|MB_OK);
 		return 0;
 	}
 
 	
-	hwnd = CreateWindowExA(WS_EX_CLIENTEDGE|WS_EX_TOPMOST,"WindowClass","360MEMZ ¿ØÖÆÌ¨",WS_VISIBLE|WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME,CW_USEDEFAULT,CW_USEDEFAULT,800,480,NULL,NULL,hInstance,NULL);
+	hwnd = CreateWindowExA(WS_EX_CLIENTEDGE|WS_EX_TOPMOST,"WindowClass","360MEMZ æ§åˆ¶å°",WS_VISIBLE|WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME,CW_USEDEFAULT,CW_USEDEFAULT,800,480,NULL,NULL,hInstance,NULL);
 	if(hwnd == NULL) {
-		MessageBoxA(NULL, "Window Creation Failed!","Error!",MB_ICONEXCLAMATION|MB_OK);
+		MessageBoxA(NULL, "Can't create window WindowClass.", "Error", MB_ICONEXCLAMATION|MB_OK);
 		return 0;
 	}
 	
@@ -199,14 +198,14 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
                 CLIP_DEFAULT_PRECIS, // nClipPrecision
                 DEFAULT_QUALITY, // nQuality
                 DEFAULT_PITCH | FF_SWISS,
-                L"Î¢ÈíÑÅºÚ" // nPitchAndFamily Arial
+                L"å¾®è½¯é›…é»‘" // nPitchAndFamily Arial
                 );
 
 
 
         HWND b1 = CreateWindow(
                 L"BUTTON",   // predefined class
-                L"ÔİÍ£ĞÂĞ§¹ûÉú³É",       // button text
+                L"æš‚åœæ–°æ•ˆæœç”Ÿæˆ",       // button text
                 WS_VISIBLE | WS_CHILD,  //values for buttons.
                 100,         // starting x position
                 300,         // starting y position
@@ -219,7 +218,7 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
 
         HWND b2 = CreateWindow(
                 L"BUTTON",   // predefined class
-                L"×Ô(À¶)öè(ÆÁ)",       // button text
+                L"è‡ª(è“)è£(å±)",       // button text
                 WS_VISIBLE | WS_CHILD,  //values for buttons.
                 290,         // starting x position
                 300,         // starting y position
@@ -232,7 +231,7 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
 		
 		HWND b3 = CreateWindow(
                 L"BUTTON",   // predefined class
-                L"ÖÕÖ¹³ÌĞò",       // button text
+                L"ç»ˆæ­¢ç¨‹åº",       // button text
                 WS_VISIBLE | WS_CHILD,  //values for buttons.
                 480,         // starting x position
                 300,         // starting y position
@@ -253,7 +252,7 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
 		DispatchMessage(&Msg);
 		if (Msg.hwnd==b1 && Msg.message== WM_LBUTTONDOWN) {
 			if(!paused){
-				SetWindowTextW(b1, L"¼ÌĞøĞÂĞ§¹ûÉú³É");
+				SetWindowTextW(b1, L"ç»§ç»­æ–°æ•ˆæœç”Ÿæˆ");
 				
 				
             	SuspendThread(OpenThread(THREAD_ALL_ACCESS, FALSE, tid));
@@ -261,7 +260,7 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
             	paused = true;
 			}
 			else{
-				SetWindowTextW(b1, L"ÔİÍ£ĞÂĞ§¹ûÉú³É");
+				SetWindowTextW(b1, L"æš‚åœæ–°æ•ˆæœç”Ÿæˆ");
 				tid = (DWORD)lpParameter;
 				
             	ResumeThread(OpenThread(THREAD_ALL_ACCESS, FALSE, tid));
@@ -277,7 +276,6 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
         if (Msg.hwnd == b3 && Msg.message == WM_LBUTTONDOWN) {
             system("taskkill /f /im rundll32.exe");
             SuspendThread(OpenThread(THREAD_ALL_ACCESS, FALSE, tid));
-            MessageBox(hwnd, L"³ÌĞòÒÑÖÕÖ¹!°´È·¶¨ÍË³ö¡£", L"360MEMZ", MB_ICONINFORMATION);
             TerminateProcess(GetCurrentProcess(), 0);
         }
 	}
