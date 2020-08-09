@@ -1,0 +1,3 @@
+[submodule "StopWorking"]
+	path = StopWorking
+	url = https://github.com/CnAoKip/StopWorking.git
