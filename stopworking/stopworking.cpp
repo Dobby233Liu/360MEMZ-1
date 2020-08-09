@@ -86,10 +86,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 		cx = rc.right - rc.left, cy = rc.bottom - rc.top;
 		SetWindowPos(hwnd, HWND_TOPMOST, random()%(w-cx), random()%(h-cy), 0, 0, SWP_NOSIZE);
 	}
-		
-#endif
-
-#ifdef RANDOMPOP
+#elseif RANDOMPOP
 	BlockInput(TRUE);
 	for(int i = 0; i < 13; i++){
 		LPCWSTR lpDescription = (random()%3==0)?lpPaths[i]:NULL;
@@ -107,5 +104,6 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	}
 	BlockInput(FALSE);
 #endif
+
 	return 0;
 }
