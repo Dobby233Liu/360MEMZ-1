@@ -2,16 +2,16 @@
 #define  WM_SHOWTASK (WM_USER + 1)
 
 const wchar_t *effectnames[] = {
-L"垃 圾 场", 
-L"关注up猪",
-L"任 务 栏 小 剧 场",
-L"删除文件",
-L"360MEMZの鬼畜",
-L"Hilbert曲线",
-L"Loading...", 
-L"Cmd_MEMZ",
-L"黑 洞",
-L"winverの骚扰" 
+	L"垃 圾 场", 
+	L"关注up猪",
+	L"任 务 栏 小 剧 场",
+	L"删除文件",
+	L"360MEMZの鬼畜",
+	L"Hilbert曲线",
+	L"Loading...", 
+	L"Cmd_MEMZ",
+	L"黑 洞",
+	L"winverの骚扰" 
 };
 
 int lasteffect = 1;
@@ -28,11 +28,8 @@ void ToTray(HWND hwnd, BOOL bDelete)
 	
 	HICON hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_360MEMZ));
     NOTIFYICONDATA nid;
-// {ECB18593-7D73-4B77-B786-251E2FDC935F}
-static const GUID ic_guid = 
-{ 0xecb18593, 0x7d73, 0x4b77, { 0xb7, 0x86, 0x25, 0x1e, 0x2f, 0xdc, 0x93, 0x5f } };
 
-    nid.guidItem = ic_guid;
+    nid.guidItem = { 0xecb18593, 0x7d73, 0x4b77, { 0xb7, 0x86, 0x25, 0x1e, 0x2f, 0xdc, 0x93, 0x5f } }; // {ECB18593-7D73-4B77-B786-251E2FDC935F}
     nid.cbSize = (DWORD)sizeof(NOTIFYICONDATA);
     nid.hWnd = hwnd;
     nid.uFlags = NIF_GUID|NIF_ICON | NIF_TIP | NIF_MESSAGE;
