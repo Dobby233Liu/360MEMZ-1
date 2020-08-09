@@ -27,5 +27,4 @@
 *.lib
 
 Build
-!Build/.gitkeep
 ./360MEMZ.exe

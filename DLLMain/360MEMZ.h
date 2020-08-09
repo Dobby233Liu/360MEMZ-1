@@ -11,6 +11,10 @@
 #include <commctrl.h>
 #include <shlobj.h>
 
+#define random rand
+#define swprintf wsprintf
+#include <math.h>
+
 DLLIMPORT int WINAPI RandomWebsites(); 
 DLLIMPORT int winver();
 DLLIMPORT LRESULT CALLBACK msgBoxHook(int nCode, WPARAM wParam, LPARAM lParam);

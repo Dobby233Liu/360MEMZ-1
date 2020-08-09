@@ -54,7 +54,7 @@ int WINAPI ReportError(LPCWSTR lpPath, LPCWSTR lpCloseText, LPCWSTR lpDescriptio
 
 	if(lpDescription){
 		WCHAR DlgHeader[565];
-		wsprintfW(DlgHeader, L"%s ÒÑÍ£Ö¹¹¤×÷", lpDescription);
+		wsprintfW(DlgHeader, L"%s å·²åœæ­¢å·¥ä½œ", lpDescription);
 		WerReportSetUIOption(hReport, WerUIIconFilePath, lpPath);
 		WerReportSetUIOption(hReport, WerUIConsentDlgHeader, DlgHeader);
 	}
@@ -72,7 +72,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	int w = GetSystemMetrics(SM_CXSCREEN), h = GetSystemMetrics(SM_CYSCREEN);
 	int cx, cy;
 	
-#ifdef DRAGACCEPT
+#ifndef RANDOMPOP
 	int argc;
 	LPWSTR *argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 	if(argc >= 4)ReportError(argv[1], argv[2], argv[3]);
@@ -86,11 +86,11 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 		cx = rc.right - rc.left, cy = rc.bottom - rc.top;
 		SetWindowPos(hwnd, HWND_TOPMOST, random()%(w-cx), random()%(h-cy), 0, 0, SWP_NOSIZE);
 	}
-#elseif RANDOMPOP
+#else
 	BlockInput(TRUE);
 	for(int i = 0; i < 13; i++){
 		LPCWSTR lpDescription = (random()%3==0)?lpPaths[i]:NULL;
-		ReportError(lpPaths[i], L"È·¶¨³ÌÐòàÃÆ¨", lpDescription);
+		ReportError(lpPaths[i], L"ç¡®å®šç¨‹åºå—å±", lpDescription);
 		Sleep(50);
 		HWND hwnd = GetForegroundWindow();
 		RECT rc;
@@ -104,6 +104,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	}
 	BlockInput(FALSE);
 #endif
+
 
 	return 0;
 }

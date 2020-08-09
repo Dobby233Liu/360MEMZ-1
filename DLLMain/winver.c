@@ -1,9 +1,6 @@
 #include "360MEMZ.h"
 
-
 HCRYPTPROV prov;
-
-
 
 HICON hIcons[8];
 
@@ -16,13 +13,13 @@ LPCSTR lpProgramNames[4] = {
 
 LPCWSTR lpProgramDescribes[8] = {
 	L"Windows",
-	L"Windows ÈÎÎñ¹ÜÀíÆ÷",
-	L"¼ÆËãÆ÷",
-	L"ÃüÁîÌáÊ¾·û",
-	L"Windows ×ÊÔ´¹ÜÀíÆ÷",
-	L"´íÎó",
-	L"¾¯¸æ",
-	L"ÐÅÏ¢"
+	L"Windows ä»»åŠ¡ç®¡ç†å™¨",
+	L"è®¡ç®—å™¨",
+	L"å‘½ä»¤æç¤ºç¬¦",
+	L"Windows èµ„æºç®¡ç†å™¨",
+	L"é”™è¯¯",
+	L"è­¦å‘Š",
+	L"ä¿¡æ¯"
 };
 
 LPSTR lpIconNames[3] = {
