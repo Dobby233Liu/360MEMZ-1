@@ -18,17 +18,10 @@ VIProductVersion 0.0.0.1
 XPStyle on
 
 ;!region installer settings
-LoadLanguageFile "${NSISDIR}\Contrib\Language files\SimpChinese.nlf"
-
 Name "360MEMZ"
-BrandingText " "
-Caption "360MEMZ"
-MiscButtonText "..." "..." "..."
-SpaceTexts ""
 OutFile "360MEMZ.exe"
 InstallDir "$TEMP\360MEMZ" ;!warning!
-ShowInstDetails nevershow
-WindowIcon off
+SilentInstall slient
 
 Function .onInit
 	System::Call 'kernel32::CreateMutex(p 0, i 0, t "NSISIs360MEMZInstallerAlreadyRunning") p .r1 ?e'
@@ -41,7 +34,6 @@ FunctionEnd
 ;!region install
 Section
 	SetOutPath "$INSTDIR"
-	;SetOverwrite ifnewer ; WON'T APPLY!
 	IfFileExists "$INSTDIR\*.*" 0 +2
 		RMDir /r "$INSTDIR" ; WARNING!
 	File "Build\*.*" ; WARNING!
