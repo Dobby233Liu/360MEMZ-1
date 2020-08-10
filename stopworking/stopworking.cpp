@@ -1,4 +1,3 @@
-//-lwer -finput-charset=GBK -fexec-charset=GBK
 #define RANDOMPOP 
 #define _WIN32_WINNT 0x602
 #define HREPORT void*

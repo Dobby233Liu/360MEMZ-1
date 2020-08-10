@@ -152,6 +152,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) 
 	return 0;
 }
 
+#define GWL_HINSTANCE -6
 DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
 	Text = (LPWSTR)LocalAlloc(LMEM_ZEROINIT, 4096);
 	HINSTANCE hInstance = GetModuleHandle(NULL);
@@ -243,7 +244,6 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
 		SendMessage(b3, WM_SETFONT, (WPARAM)font, 1);
 		
 	bool paused = false;
-	DWORD tid = (DWORD)lpParameter;
 	while(GetMessage(&Msg, NULL, 0, 0) > 0) {
 		TranslateMessage(&Msg);
 		DispatchMessage(&Msg);
@@ -251,16 +251,14 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
 			if(!paused){
 				SetWindowTextW(b1, L"继续新效果生成");
 				
-				
-            	SuspendThread(OpenThread(THREAD_ALL_ACCESS, FALSE, tid));
+            	SuspendThread(OpenThread(THREAD_ALL_ACCESS, FALSE, (DWORD_PTR)lpParameter));
             	KillTimer(hwnd, 1);
             	paused = true;
 			}
 			else{
 				SetWindowTextW(b1, L"暂停新效果生成");
-				tid = (DWORD)lpParameter;
 				
-            	ResumeThread(OpenThread(THREAD_ALL_ACCESS, FALSE, tid));
+            	ResumeThread(OpenThread(THREAD_ALL_ACCESS, FALSE, (DWORD_PTR)lpParameter));
             	SetTimer(hwnd, 1, 1000, NULL);
             	paused = false;
 			}
@@ -272,7 +270,7 @@ DWORD WINAPI CreateTerminater(LPVOID lpParameter) {
         
         if (Msg.hwnd == b3 && Msg.message == WM_LBUTTONDOWN) {
             system("taskkill /f /im rundll32.exe");
-            SuspendThread(OpenThread(THREAD_ALL_ACCESS, FALSE, tid));
+            SuspendThread(OpenThread(THREAD_ALL_ACCESS, FALSE, (DWORD_PTR)lpParameter));
             TerminateProcess(GetCurrentProcess(), 0);
         }
 	}

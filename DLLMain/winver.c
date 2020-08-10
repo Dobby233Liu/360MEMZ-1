@@ -38,9 +38,30 @@ void LoadIco(void){
 	}
 }
 
+LRESULT CALLBACK msgBoxHookTempCopy(int nCode, WPARAM wParam, LPARAM lParam) {
+	int w = GetSystemMetrics(SM_CXSCREEN);
+	int h = GetSystemMetrics(SM_CYSCREEN);
+
+	if (nCode == HCBT_CREATEWND) {
+		CREATESTRUCT *pcs = ((CBT_CREATEWND *)lParam)->lpcs;
+
+		if ((pcs->style & WS_DLGFRAME)) {
+			HWND hwnd = (HWND)wParam;
+
+			int x = random() % (w - pcs->cx);
+			int y = random() % (h - pcs->cy);
+
+			pcs->x = x;
+			pcs->y = y;
+		}
+	}
+
+	return CallNextHookEx(0, nCode, wParam, lParam);
+}
+
 DWORD WINAPI AboutBox(LPVOID parameter){
 	int index = random() % 8;
-	HHOOK hook = SetWindowsHookEx(WH_CBT, msgBoxHook, 0, GetCurrentThreadId());
+	HHOOK hook = SetWindowsHookEx(WH_CBT, msgBoxHookTempCopy, 0, GetCurrentThreadId());
 	int ret = ShellAboutW(NULL, lpProgramDescribes[index], NULL, hIcons[index]); 
 	UnhookWindowsHookEx(hook); 
 	

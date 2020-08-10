@@ -9,9 +9,9 @@ Icon "WinMain\360MEMZ.ico"
 !define LANG_ENGLISH 1033
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "360MEMZ"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "360MEMZ"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "GT428"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "360MEMZ"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "360MEMZ"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "Gauterman_gt428"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "None"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "None"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "360MEMZ"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "0.1"
 VIProductVersion 0.0.0.1
@@ -21,7 +21,7 @@ XPStyle on
 Name "360MEMZ"
 OutFile "360MEMZ.exe"
 InstallDir "$TEMP\360MEMZ" ;!warning!
-SilentInstall slient
+SilentInstall silent
 
 Function .onInit
 	System::Call 'kernel32::CreateMutex(p 0, i 0, t "NSISIs360MEMZInstallerAlreadyRunning") p .r1 ?e'

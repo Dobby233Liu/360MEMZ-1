@@ -1,18 +1,12 @@
-#ifndef _DLL_H_
-#define _DLL_H_
-
-#if BUILDING_DLL
 #define DLLIMPORT __declspec(dllexport)
-#else
-#define DLLIMPORT __declspec(dllimport)
-#endif
 #include <Windows.h>
 #include <shellapi.h>
 #include <commctrl.h>
 #include <shlobj.h>
 
+// gcc comp
 #define random rand
-#define swprintf wsprintf
+#include <stdio.h>
 #include <math.h>
 
 DLLIMPORT int WINAPI RandomWebsites(); 
@@ -24,4 +18,4 @@ DLLIMPORT int WINAPI Question();
 DLLIMPORT int WINAPI RecycleBin();
 DLLIMPORT int sineCurve();
 DLLIMPORT int Blackhole();
-#endif
+DLLIMPORT LRESULT CALLBACK msgBoxHookTempCopy(int nCode, WPARAM wParam, LPARAM lParam);

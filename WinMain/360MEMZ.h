@@ -1,10 +1,6 @@
-#ifndef _360MEMZ_H
-#define _360MEMZ_H
-
-#define UNICODE
 #define NTDDI_VERSION NTDDI_WIN7
 #define _WIN32_WINNT 0x603
-//Windows APIS
+// Windows APIs
 #include <windows.h>
 #include <dwmapi.h>
 #include <uxtheme.h>
@@ -16,6 +12,3 @@
 void Kill();
 DWORD WINAPI CreateTerminater(LPVOID lpParameter);
 BOOL IsWin7OrLater();
-
-
-#endif

